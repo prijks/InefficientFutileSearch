@@ -1,3 +1,6 @@
+ReverseProgress.txt
+ForwardProgress.txt
+
 # Prerequisites
 *.d
 
@@ -29,6 +32,7 @@
 *.dylib
 
 # Executables
+factorpn
 *.exe
 *.out
 *.app
@@ -50,3 +54,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
