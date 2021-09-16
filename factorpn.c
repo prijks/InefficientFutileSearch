@@ -131,6 +131,7 @@ int main()
     printf("Calculating additional factors...\n");
 
     signal(SIGINT, sigSaveProgress);
+    signal(SIGTERM, sigSaveProgress);
 
     int i = 0;
     int reportinterval = child_pid == 0 ? 20000 : 1000000;
