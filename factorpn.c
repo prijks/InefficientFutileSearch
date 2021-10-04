@@ -137,6 +137,30 @@ int main()
     int reportinterval = child_pid == 0 ? 20000 : 1000000;
     clock_t begin = clock();
 
+    int addends[] = {2, 2, 2, 4};
+    int addend = 0;
+
+    if (child_pid == 0)
+    {
+        // reverse search, want to start with a digit ending in 3 -> 3-2=1 1-2=9 9-2=7 7-4=3
+        mpz_mod_ui(mod, currentFactor, 10);
+        while (mpz_cmp_ui(mod, 3) != 0)
+        {
+            mpz_add_ui(currentFactor, currentFactor, 2);
+            mpz_mod_ui(mod, currentFactor, 10);
+        }
+    }
+    else
+    {
+        // forward search, want to start with a digit ending in 7 -> 7+2=9 9+2=1 1+2=3 3+4=7
+        mpz_mod_ui(mod, currentFactor, 10);
+        while (mpz_cmp_ui(mod, 7) != 0)
+        {
+            mpz_sub_ui(currentFactor, currentFactor, 2);
+            mpz_mod_ui(mod, currentFactor, 10);
+        }
+    }
+
     while (1) // (mpz_cmp(currentFactor, sqrtpn) < 0)
     {
         mpz_mod(mod, pn, currentFactor);
@@ -169,11 +193,19 @@ int main()
         }
         if (child_pid == 0)
         {
-            mpz_sub_ui(currentFactor, currentFactor, 2);
+            mpz_sub_ui(currentFactor, currentFactor, addends[addend++]);
+            if (addend > 3)
+            {
+                addend = 0;
+            }
         }
         else
         {
-            mpz_add_ui(currentFactor, currentFactor, 2);
+            mpz_add_ui(currentFactor, currentFactor, addends[addend++]);
+            if (addend > 3)
+            {
+                addend = 0;
+            }
         }
     }
 
